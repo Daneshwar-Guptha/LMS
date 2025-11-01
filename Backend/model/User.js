@@ -11,21 +11,25 @@ const userDetails = new Schema({
         type: String,
         required: true,
         unique: true,
-        validator: {
-            validate:validator.isEmail,
+        validate: {
+            validator:validator.isEmail,
             message: "Invalid is email"
         }
     },
     password: {
         type: String,
         required: true,
-        validator:{
-            validate:validator.isStrongPassword,
+        validate:{
+            validator:validator.isStrongPassword,
             message:"Invalid password"
         }
 
+    },
+    image:{
+        type:String,
     }
 })
+module.exports = mongoose.model("User",userDetails)
 
 
 
