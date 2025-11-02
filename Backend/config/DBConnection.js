@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose');
-const uri = "mongodb+srv://dbUser:dbUser@guptacluster.terlemf.mongodb.net/LMS?retryWrites=true&w=majority&appName=GuptaCluster";
+require('dotenv').config();
+const uri = process.env.MONGO_URI;
 
 const DBConnection = async() => {
     await mongoose.connect(uri)
