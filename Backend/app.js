@@ -6,11 +6,13 @@ const Course = require('./model/Course');
 const Enrollment = require('./model/Enrollement');
 const authRoutes = require('./Routes/authRoutes');
 const cookieParser = require('cookie-parser');
+const userRoutes = require('./Routes/UserRoutes');
 
 app.use(express.json());
 app.use(cookieParser());
 
 app.use('/auth',authRoutes);
+app.use('/user',userRoutes);
 
 DBConnection()
 .then(()=>{
