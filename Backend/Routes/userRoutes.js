@@ -31,7 +31,7 @@ userRoutes.get('/courses/:id', auth, async (req, res) => {
 userRoutes.post('/courses/:id/enroll',auth,async(req,res)=>{
     try{
         const {id} = req.body;
-        const en 
+       
 
     }catch(error){
 
