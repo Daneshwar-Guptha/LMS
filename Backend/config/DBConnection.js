@@ -1,6 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose');
-require('dotenv').config();
+require('dotenv').config({ quiet: true });
 const uri = process.env.MONGO_URI;
 
 const DBConnection = async() => {

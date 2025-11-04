@@ -1,12 +1,13 @@
 const express = require('express');
 const authRoutes = express.Router();
 const User = require('../model/User');
-const validator = require('validator');
+
 const bcrypt = require('bcrypt');
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
-const auth = require('../middleware/auth');
+const { auth } = require('../middleware/auth');
+const { validateSignupData } = require('../utils/validations');
 
 
 authRoutes.post('/user/signup', async (req, res) => {
@@ -16,23 +17,16 @@ authRoutes.post('/user/signup', async (req, res) => {
         if (userData) {
             throw new Error('Email already exists');
         }
-        if (name.length < 5) {
-            throw new Error('Invalid name (must be at least 5 characters)');
-        }
-        if (!validator.isEmail(email)) {
-            throw new Error('Invalid email address');
-        }
-        if (!validator.isStrongPassword(password)) {
-            throw new Error('Please enter a stronger password');
-        }
-        const hashedPassword = await bcrypt.hash(password, 10);
+        validateSignupData(req.body)
+
         const newUser = new User({
             name,
             email,
-            password: hashedPassword,
+            password,
             role: 'user',
         });
         await newUser.save();
+
         res.status(201).json({
             message: 'User registered successfully'
         });
@@ -48,20 +42,13 @@ authRoutes.post('/instructor/signup', async (req, res) => {
         if (userData) {
             throw new Error('Email already exists');
         }
-        if (name.length < 5) {
-            throw new Error('Invalid name (must be at least 5 characters)');
-        }
-        if (!validator.isEmail(email)) {
-            throw new Error('Invalid email address');
-        }
-        if (!validator.isStrongPassword(password)) {
-            throw new Error('Please enter a stronger password');
-        }
-        const hashedPassword = await bcrypt.hash(password, 10);
+
+        validateSignupData(req.body);
+
         const newUser = new User({
             name,
             email,
-            password: hashedPassword,
+            password,
             role: 'instructor',
         });
         await newUser.save();
@@ -83,7 +70,7 @@ authRoutes.post('/login', async (req, res) => {
             res.clearCookie('token');
             throw new Error("please register first");
         }
-        const passwordValid = await bcrypt.compare(password, userData.password);
+        const passwordValid = await userData.isPasswordMatch(password)
         if (!passwordValid) {
             throw new Error("Invalid password");
         }
