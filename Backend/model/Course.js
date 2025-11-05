@@ -15,32 +15,31 @@ const courseSchema = new Schema(
     instructorId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: [true, "Instructor is required"],
+      required: true,
     },
     price: {
       type: Number,
       required: [true, "Course price is required"],
-      min: [0, "Price cannot be negative"],
-    },
-    thumbnail: {
-      type: String, // URL or image link
-      default: "",
-    },
-    category: {
-      type: String,
-      enum: ["development", "design", "marketing", "other"],
-      default: "other",
+      min: 0,
     },
     lessons: [
       {
-        title: { type: String, required: true },
-        content: { type: String }, 
-        duration: { type: Number, default: 0 }, 
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Lesson",
       },
     ],
     totalLessons: {
       type: Number,
-      default: 0, 
+      default: 0,
+    },
+    thumbnail: {
+      type: String,
+      default: "",
+    },
+    category: {
+      type: String,
+      trim: true,
+      default: "General",
     },
     isPublished: {
       type: Boolean,
@@ -49,5 +48,9 @@ const courseSchema = new Schema(
   },
   { timestamps: true }
 );
+
+// Indexes
+courseSchema.index({ instructorId: 1 });
+courseSchema.index({ title: 1 });
 
 module.exports = model("Course", courseSchema);
