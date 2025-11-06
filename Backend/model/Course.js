@@ -1,4 +1,4 @@
-const { Schema, model, default: mongoose } = require("mongoose");
+const { Schema, model ,mongoose} = require("mongoose");
 
 const courseSchema = new Schema(
   {
@@ -22,25 +22,30 @@ const courseSchema = new Schema(
       required: [true, "Course price is required"],
       min: 0,
     },
-    lessons: [
+    sections: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Lesson",
-      },
-    ],
-    totalLessons: {
-      type: Number,
-      default: 0,
-    },
+
+        title: String,
+        lessons: [
+          {
+            title: { type: String, required: true },
+            videoUrl: { type: String },
+            videoPublicId: String,
+
+            cheatSheetUrl: { type: String },
+            cheatSheetPublicId: String,
+            duration: { type: Number }
+          }
+        ]
+
+      }
+    ]
+    ,
     thumbnail: {
       type: String,
       default: "",
     },
-    category: {
-      type: String,
-      trim: true,
-      default: "General",
-    },
+
     isPublished: {
       type: Boolean,
       default: false,
@@ -49,8 +54,6 @@ const courseSchema = new Schema(
   { timestamps: true }
 );
 
-// Indexes
-courseSchema.index({ instructorId: 1 });
-courseSchema.index({ title: 1 });
+
 
 module.exports = model("Course", courseSchema);
