@@ -28,7 +28,7 @@ const auth = async (req, res, next) => {
   }
 };
 
-const adminAuth = async (req, res, next) => {
+const instructorAuth = async (req, res, next) => {
   try {
     const token = req.cookies.token;
     if (!token) {
@@ -46,7 +46,8 @@ const adminAuth = async (req, res, next) => {
     if (!userData) {
       return res.status(404).json({ message: "User not found." });
     }
-    if (userData.role !== 'admin') {
+    if (userData.role !== 'instructor') {
+    
       return res.status(403).json({ message: "Unauthorized access. Admins only." });
     }
 
@@ -58,4 +59,4 @@ const adminAuth = async (req, res, next) => {
 };
 
 
-module.exports = {auth,adminAuth};
+module.exports = {auth,instructorAuth};

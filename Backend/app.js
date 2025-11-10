@@ -7,6 +7,7 @@ const Enrollment = require('./model/Enrollement');
 const authRoutes = require('./Routes/authRoutes');
 const cookieParser = require('cookie-parser');
 const userRoutes = require('./Routes/UserRoutes');
+const InstructorRoutes = require('./Routes/InstructorRoutes');
 
 
 app.use(express.json());
@@ -14,6 +15,7 @@ app.use(cookieParser());
 
 app.use('/auth',authRoutes);
 app.use('/user',userRoutes);
+app.use('/instructor',InstructorRoutes)
 
 
 DBConnection()
