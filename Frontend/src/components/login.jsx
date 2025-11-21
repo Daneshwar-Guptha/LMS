@@ -27,7 +27,7 @@ const Login = () => {
 
       if (response.status === 200) {
         alert(`Logged in as: ${username || email}`);
-        navigate("/home"); // ✅ navigate only after successful login
+        navigate("/home"); 
       }
     } catch (err) {
       alert(err.response?.data?.message || "Login failed. Please try again.");
